@@ -1,0 +1,46 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server"
+  version: "1.0.0"
+  title: "Swagger Example"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /search
+    get:
+      summary: "Example operation"
+      description: "Example operation"
+      operationId: "exampleOperation"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "p1"
+        in: "query"
+        description: "p1"
+        required: false
+        type: "string"
+      - name: "p2"
+        in: "query"
+        description: "p2"
+        required: false
+        type: "string"
+      - name: "p3"
+        in: "query"
+        description: "p3"
+        required: false
+        type: "string"
+      - name: "p4"
+        in: "query"
+        description: "p4"
+        required: false
+        type: "string"
+      x-dependencies:
+        - IF p1 THEN p2=='value1';
+        - AllOrNone(p3, p4);
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Bad Request"

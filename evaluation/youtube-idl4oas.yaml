@@ -1,0 +1,436 @@
+﻿swagger: '2.0'
+schemes:
+  - https
+host: www.googleapis.com
+basePath: /youtube/v3
+info:
+  contact:
+    name: Google
+    url: 'https://google.com'
+  description: 'Supports core YouTube features, such as uploading videos, creating and managing playlists, searching for content, and much more.'
+  license:
+    name: Creative Commons Attribution 3.0
+    url: 'http://creativecommons.org/licenses/by/3.0/'
+  termsOfService: 'https://developers.google.com/terms/'
+  title: YouTube Data
+  version: v3
+externalDocs:
+  url: 'https://developers.google.com/youtube/v3'
+securityDefinitions:
+  Oauth2:
+    authorizationUrl: 'https://accounts.google.com/o/oauth2/auth'
+    description: Oauth 2.0 implicit authentication
+    flow: implicit
+    scopes:
+      'https://www.googleapis.com/auth/youtube': Manage your YouTube account
+      'https://www.googleapis.com/auth/youtube.force-ssl': 'See, edit, and permanently delete your YouTube videos, ratings, comments and captions'
+      'https://www.googleapis.com/auth/youtube.readonly': View your YouTube account
+      'https://www.googleapis.com/auth/youtube.upload': Manage your YouTube videos
+      'https://www.googleapis.com/auth/youtubepartner': View and manage your assets and associated content on YouTube
+      'https://www.googleapis.com/auth/youtubepartner-channel-audit': View private information of your YouTube channel relevant during the audit process with a YouTube partner
+    type: oauth2
+  Oauth2c:
+    authorizationUrl: 'https://accounts.google.com/o/oauth2/auth'
+    description: Oauth 2.0 accessCode authentication
+    flow: accessCode
+    scopes:
+      'https://www.googleapis.com/auth/youtube': Manage your YouTube account
+      'https://www.googleapis.com/auth/youtube.force-ssl': 'See, edit, and permanently delete your YouTube videos, ratings, comments and captions'
+      'https://www.googleapis.com/auth/youtube.readonly': View your YouTube account
+      'https://www.googleapis.com/auth/youtube.upload': Manage your YouTube videos
+      'https://www.googleapis.com/auth/youtubepartner': View and manage your assets and associated content on YouTube
+      'https://www.googleapis.com/auth/youtubepartner-channel-audit': View private information of your YouTube channel relevant during the audit process with a YouTube partner
+    tokenUrl: 'https://accounts.google.com/o/oauth2/token'
+    type: oauth2
+parameters:
+  alt:
+    default: json
+    description: 'Data format for the response.'
+    enum:
+      - json
+    in: query
+    name: alt
+    type: string
+  fields:
+    description: 'Selector specifying which fields to include in a partial response.'
+    in: query
+    name: fields
+    type: string
+  key:
+    description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+    in: query
+    name: key
+    type: string
+    required: true
+  oauth_token:
+    description: 'OAuth 2.0 token for the current user.'
+    in: query
+    name: oauth_token
+    type: string
+  prettyPrint:
+    default: true
+    description: 'Returns response with indentations and line breaks.'
+    in: query
+    name: prettyPrint
+    type: boolean
+  quotaUser:
+    description: 'An opaque string that represents a user for quota purposes. Must not exceed 40 characters.'
+    in: query
+    name: quotaUser
+    type: string
+  userIp:
+    description: 'Deprecated. Please use quotaUser instead.'
+    in: query
+    name: userIp
+    type: string
+tags:
+  - name: search
+paths:
+  /search:
+    get:
+      description: 'Returns a collection of search results that match the query parameters specified in the API request. By default, a search result set identifies matching video, channel, and playlist resources, but you can also configure queries to only retrieve a specific type of resource.'
+      operationId: youtubeSearchList
+      parameters:
+        - description: 'The channelId parameter indicates that the API response should only contain resources created by the channel'
+          in: query
+          name: channelId
+          type: string
+          required: false
+          enum:
+            - UCvosUrZ7hXpzAyobhfztg4w
+            - UCMtFAi84ehTSYSE9XoHefig
+            - UClzCn8DxRSCuMFv_WfzkcrQ
+            - UCJ0uqCI0Vqr2Rrt1HseGirg
+            - UCDwjiSF4qEb3aeT3ZLkPc_Q
+        - description: 'The channelType parameter lets you restrict a search to a particular type of channel.'
+          enum:
+            - any
+            - show
+          in: query
+          name: channelType
+          type: string
+          required: false
+        - description: 'The eventType parameter restricts a search to broadcast events. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - completed
+            - live
+            - upcoming
+          in: query
+          name: eventType
+          type: string
+          required: false
+        #        - description: '|-
+        #            Note: This parameter is intended exclusively for YouTube content partners.
+        #
+        #            The forContentOwner parameter restricts the search to only retrieve resources owned by the content owner specified by the onBehalfOfContentOwner parameter. The user must be authenticated using a CMS account linked to the specified content owner and onBehalfOfContentOwner must be provided.'
+        #          in: query
+        #          name: forContentOwner
+        #          type: boolean
+        #          required: false
+        - description: 'The forDeveloper parameter restricts the search to only retrieve videos uploaded via the developer''s application or website. The API server uses the request''s authorization credentials to identify the developer. Therefore, a developer can restrict results to videos uploaded through the developer''s own app or website but not to videos uploaded through other apps or sites.'
+          in: query
+          name: forDeveloper
+          type: boolean
+          required: false
+        #        - description: 'The forMine parameter restricts the search to only retrieve videos owned by the authenticated user. If you set this parameter to true, then the type parameter''s value must also be set to video.'
+        #          in: query
+        #          name: forMine
+        #          type: boolean
+        #          required: false
+        - description: '|-
+            The location parameter, in conjunction with the locationRadius parameter, defines a circular geographic area and also restricts a search to videos that specify, in their metadata, a geographic location that falls within that area. The parameter value is a string that specifies latitude/longitude coordinates e.g. (37.42307,-122.08427).
+
+
+            - The location parameter value identifies the point at the center of the area.
+            - The locationRadius parameter specifies the maximum distance that the location associated with a video can be from that point for the video to still be included in the search results.The API returns an error if your request specifies a value for the location parameter but does not also specify a value for the locationRadius parameter.'
+          in: query
+          name: location
+          type: string
+          required: false
+          enum:
+            - 37.42307,-122.08427
+            - 37.392191,-5.995193
+            - 35.681999,139.769254
+            - -33.924278,18.424572
+            - -37.812746,144.961832
+        - description: '|-
+            The locationRadius parameter, in conjunction with the location parameter, defines a circular geographic area.
+
+            The parameter value must be a floating point number followed by a measurement unit. Valid measurement units are m, km, ft, and mi. For example, valid parameter values include 1500m, 5km, 10000ft, and 0.75mi. The API does not support locationRadius parameter values larger than 1000 kilometers.
+
+            Note: See the definition of the location parameter for more information.'
+          in: query
+          name: locationRadius
+          type: string
+          required: false
+          enum:
+            - 1m
+            - 1500m
+            - 5km
+            - 500km
+            - 1000km
+        - default: 5
+          description: 'The maxResults parameter specifies the maximum number of items that should be returned in the result set.'
+          in: query
+          maximum: 50
+          minimum: 0
+          name: maxResults
+          type: integer
+          required: false
+          enum:
+            - 0
+            - 5
+            - 15
+            - 30
+            - 50
+        #        - description: '|-
+        #            Note: This parameter is intended exclusively for YouTube content partners.
+        #
+        #            The onBehalfOfContentOwner parameter indicates that the request''s authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.'
+        #          in: query
+        #          name: onBehalfOfContentOwner
+        #          type: string
+        #          required: false
+        - default: relevance
+          description: 'The order parameter specifies the method that will be used to order resources in the API response.'
+          enum:
+            - date
+            - rating
+            - relevance
+            - title
+            - videoCount
+            - viewCount
+          in: query
+          name: order
+          type: string
+          required: false
+        - description: 'The pageToken parameter identifies a specific page in the result set that should be returned. In an API response, the nextPageToken and prevPageToken properties identify other pages that could be retrieved.'
+          in: query
+          name: pageToken
+          type: string
+          required: false
+          enum:
+            - CAUQAA
+            - CAoQAA
+            - CA8QAA
+            - CBQQAA
+            - CBkQAA
+        - description: 'The part parameter specifies a comma-separated list of one or more search resource properties that the API response will include. Set the parameter value to snippet.'
+          in: query
+          name: part
+          required: true
+          type: string
+          enum:
+            - snippet
+        #        - description: 'The publishedAfter parameter indicates that the API response should only contain resources created after the specified time. The value is an RFC 3339 formatted date-time value (1970-01-01T00:00:00Z).'
+        #          in: query
+        #          name: publishedAfter
+        #          type: string
+        #          required: false
+        #        - description: 'The publishedBefore parameter indicates that the API response should only contain resources created before the specified time. The value is an RFC 3339 formatted date-time value (1970-01-01T00:00:00Z).'
+        #          in: query
+        #          name: publishedBefore
+        #          type: string
+        #          required: false
+        - description: '|-
+            The q parameter specifies the query term to search for.
+
+            Your request can also use the Boolean NOT (-) and OR (|) operators to exclude videos or to find videos that are associated with one of several search terms. For example, to search for videos matching either "boating" or "sailing", set the q parameter value to boating|sailing. Similarly, to search for videos matching either "boating" or "sailing" but not "fishing", set the q parameter value to boating|sailing -fishing. Note that the pipe character must be URL-escaped when it is sent in your API request. The URL-escaped value for the pipe character is %7C.'
+          in: query
+          name: q
+          type: string
+          required: false
+          enum:
+            - cats
+            - music
+            - late night show
+            - soccer
+            - GoT reactions
+        - description: 'The regionCode parameter instructs the API to return search results for the specified country. The parameter value is an ISO 3166-1 alpha-2 country code.'
+          in: query
+          name: regionCode
+          type: string
+          required: false
+          enum:
+            - es
+            - us
+            - de
+            - it
+            - pt
+        - description: 'The relatedToVideoId parameter retrieves a list of videos that are related to the video that the parameter value identifies. The parameter value must be set to a YouTube video ID and, if you are using this parameter, the type parameter must be set to video.'
+          in: query
+          name: relatedToVideoId
+          type: string
+          required: false
+          enum:
+            - zZa8PFYtWr4
+            - TUJWx7vo44c
+            - usO_6-RuCrg
+            - 7m-NPuXPBqM
+            - yDgLFOxnQ8Y
+        - description: 'The relevanceLanguage parameter instructs the API to return search results that are most relevant to the specified language. The parameter value is typically an ISO 639-1 two-letter language code. However, you should use the values zh-Hans for simplified Chinese and zh-Hant for traditional Chinese. Please note that results in other languages will still be returned if they are highly relevant to the search query term.'
+          in: query
+          name: relevanceLanguage
+          type: string
+          required: false
+          enum:
+            - es
+            - en
+            - de
+            - it
+            - pt
+        - description: 'The safeSearch parameter indicates whether the search results should include restricted content as well as standard content.'
+          enum:
+            - moderate
+            - none
+            - strict
+          in: query
+          name: safeSearch
+          type: string
+          required: false
+        - description: 'The topicId parameter indicates that the API response should only contain resources associated with the specified topic. The value identifies a Freebase topic ID.'
+          in: query
+          name: topicId
+          type: string
+          required: false
+          enum:
+            - /m/04rlf
+            - /m/025zzc
+            - /m/06ntj
+            - /m/02vxn
+            - /m/098wr
+        - default: 'video,channel,playlist'
+          description: 'The type parameter restricts a search query to only retrieve a particular type of resource. The value is a comma-separated list of resource types.'
+          in: query
+          name: type
+          type: string
+          required: false
+          enum:
+            - 'video,channel,playlist'
+            - 'channel,playlist'
+            - 'video,playlist'
+            - 'video,channel'
+            - 'video'
+            - 'channel'
+            - 'playlist'
+        - description: 'The videoCaption parameter indicates whether the API should filter video search results based on whether they have captions. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - closedCaption
+            - none
+          in: query
+          name: videoCaption
+          type: string
+          required: false
+        - description: 'The videoCategoryId parameter filters video search results based on their category. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          in: query
+          name: videoCategoryId
+          type: string
+          required: false
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+        - description: 'The videoDefinition parameter lets you restrict a search to only include either high definition (HD) or standard definition (SD) videos. HD videos are available for playback in at least 720p, though higher resolutions, like 1080p, might also be available. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - high
+            - standard
+          in: query
+          name: videoDefinition
+          type: string
+          required: false
+        - description: 'The videoDimension parameter lets you restrict a search to only retrieve 2D or 3D videos. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - 2d
+            - 3d
+            - any
+          in: query
+          name: videoDimension
+          type: string
+          required: false
+        - description: 'The videoDuration parameter filters video search results based on their duration. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - long
+            - medium
+            - short
+          in: query
+          name: videoDuration
+          type: string
+          required: false
+        - description: 'The videoEmbeddable parameter lets you to restrict a search to only videos that can be embedded into a webpage. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - true
+          in: query
+          name: videoEmbeddable
+          type: string
+          required: false
+        - description: 'The videoLicense parameter filters search results to only include videos with a particular license. YouTube lets video uploaders choose to attach either the Creative Commons license or the standard YouTube license to each of their videos. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - creativeCommon
+            - youtube
+          in: query
+          name: videoLicense
+          type: string
+          required: false
+        - description: 'The videoSyndicated parameter lets you to restrict a search to only videos that can be played outside youtube.com. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - true
+          in: query
+          name: videoSyndicated
+          type: string
+          required: false
+        - description: 'The videoType parameter lets you restrict a search to a particular type of videos. If you specify a value for this parameter, you must also set the type parameter''s value to video.'
+          enum:
+            - any
+            - episode
+            - movie
+          in: query
+          name: videoType
+          type: string
+          required: false
+      x-dependencies:
+        - ZeroOrOne(forDeveloper, relatedToVideoId);
+        - IF forMine==true THEN type=='video' AND NOT (videoDefinition OR videoDimension OR videoDuration OR videoLicense OR videoEmbeddable OR videoSyndicated OR videoType);
+        - IF relatedToVideoId THEN type=='video' AND NOT (channelId OR channelType OR eventType OR location OR locationRadius OR order OR q OR topicId OR videoCaption OR videoCategoryId OR videoDefinition OR videoDimension OR videoDuration OR videoEmbeddable OR videoLicense OR videoSyndicated OR videoType);
+        - AllOrNone(location, locationRadius);
+        - IF channelType THEN type=='channel';
+        - IF eventType OR videoCaption OR videoCategoryId OR videoDefinition OR videoDimension OR videoDuration OR videoEmbeddable OR videoLicense OR videoSyndicated OR videoType THEN type=='video';
+      responses:
+        '200':
+          description: Successful response
+        'default':
+          description: General response
+      security:
+        - Oauth2:
+            - 'https://www.googleapis.com/auth/youtube'
+          Oauth2c:
+            - 'https://www.googleapis.com/auth/youtube'
+        - Oauth2:
+            - 'https://www.googleapis.com/auth/youtube.force-ssl'
+          Oauth2c:
+            - 'https://www.googleapis.com/auth/youtube.force-ssl'
+        - Oauth2:
+            - 'https://www.googleapis.com/auth/youtube.readonly'
+          Oauth2c:
+            - 'https://www.googleapis.com/auth/youtube.readonly'
+        - Oauth2:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+          Oauth2c:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+      tags:
+        - search
+#    parameters:
+#      - $ref: '#/parameters/alt'
+#      - $ref: '#/parameters/fields'
+#      - $ref: '#/parameters/key'
+#      - $ref: '#/parameters/oauth_token'
+#      - $ref: '#/parameters/prettyPrint'
+#      - $ref: '#/parameters/quotaUser'
+#      - $ref: '#/parameters/userIp'
