@@ -1,2 +1,8 @@
 # ICSE-2020-SRC---Supplementary-material
-Repository containing all supplementary material for the paper of the ACM Student Research Competition to be held at ICSE 2020
+Repository containing all supplementary material for the paper of the ACM Student Research Competition to be held at ICSE 2020.
+
+All resources are listed below (they are links to the actual resources):
+- [IDL repository](https://github.com/isa-group/IDL4OAI)
+- [IDL grammar](https://github.com/isa-group/ICSE-2020-SRC---Supplementary-material/blob/master/doc/idl-grammar.xtext)
+- [IDL to CSP mapping](https://github.com/isa-group/ICSE-2020-SRC---Supplementary-material/blob/master/doc/idl2csp.png)
+- [IDL4OAS specification of the Bing Web Search API](https://github.com/isa-group/ICSE-2020-SRC---Supplementary-material/blob/master/doc/idl4oas-bing-web-search.yaml)
